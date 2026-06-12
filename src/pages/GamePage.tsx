@@ -28,6 +28,7 @@ export default function GamePage() {
     triggerEvent,
     saveGame,
     ship,
+    statistics,
     currentPlanetId,
   } = useGameStore();
 
@@ -67,7 +68,7 @@ export default function GamePage() {
       wasTravelingRef.current = false;
 
       const { from, to } = lastTravelRef.current;
-      const result = rollTravelEvent(from, to);
+      const result = rollTravelEvent(from, to, { statistics, ship });
 
       if (result.eventType === 'pirates' && result.pirateDifficulty !== undefined) {
         const battle = createInitialBattleState(ship.maxShield, ship.damage, result.pirateDifficulty);
@@ -78,7 +79,7 @@ export default function GamePage() {
 
       lastTravelRef.current = null;
     }
-  }, [travelState, ship.maxShield, ship.damage, setBattleState, triggerEvent]);
+  }, [travelState, ship, statistics, setBattleState, triggerEvent]);
 
   const handleBackToMenu = () => {
     saveGame();
